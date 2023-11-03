@@ -9,7 +9,7 @@ public class Server {
             
             while (true) {
                 Socket socket = serverSocket.accept();
-                myRunnableServer threadJob = new myRunnableServer(socket,myList);
+                MyRunnableServer threadJob = new MyRunnableServer(socket,myList);
                 myList.list.add(threadJob);
                 threadJob.setIndex(myList.list.indexOf(threadJob));
                 new Thread(threadJob).start();

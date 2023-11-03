@@ -4,14 +4,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class myRunnableServer implements Runnable {
+public class MyRunnableServer implements Runnable {
     private String name;
     private final Socket socket;
     private ListOfRunnables myList;
     final int END_OF_SENTENCE = 10;
     private int index = -1;
     
-    public myRunnableServer(Socket socket, ListOfRunnables myList) {
+    public MyRunnableServer(Socket socket, ListOfRunnables myList) {
         this.socket = socket;
         this.myList = myList;
     }
@@ -31,7 +31,7 @@ public class myRunnableServer implements Runnable {
             while(!nameAssigned) {
                 input = inputStream.read();
                 
-                if (input != 10) {
+                if (input != END_OF_SENTENCE) {
                     bytes.write((byte) input);
                     
                 } else if (bytes.size() > 0) {
@@ -42,7 +42,7 @@ public class myRunnableServer implements Runnable {
             }
             String joinMessage = name+" entered the chat.";
             System.out.println(joinMessage);
-            for (myRunnableServer run : myList.list) {
+            for (MyRunnableServer run : myList.list) {
                 run.sendMessage(joinMessage);
             }
             
@@ -64,7 +64,7 @@ public class myRunnableServer implements Runnable {
                     
                     if (!strBytes.isEmpty()) {
                         System.out.println(message);
-                        for (myRunnableServer run : myList.list) {
+                        for (MyRunnableServer run : myList.list) {
                             run.sendMessage(message);
                         }
                     }
@@ -73,14 +73,14 @@ public class myRunnableServer implements Runnable {
             }
             String leaveMessage = name+" left the chat.";
             System.out.println(leaveMessage);
-            for (myRunnableServer run : myList.list) {
+            for (MyRunnableServer run : myList.list) {
                 run.sendMessage(leaveMessage);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         myList.list.remove(index);
-        for(myRunnableServer runnableServer : myList.list) {
+        for(MyRunnableServer runnableServer : myList.list) {
             if(runnableServer.index>index) {
                 runnableServer.setIndex(runnableServer.index-1);
             }
